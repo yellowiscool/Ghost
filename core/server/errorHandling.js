@@ -141,7 +141,8 @@ errors = {
             }
 
             // TODO: Attach node-polyglot
-            res.render((errorView || 'error'), {
+
+            res.status(code).render((errorView || 'error'), {
                 message: err.message || err,
                 code: code,
                 stack: stack
@@ -176,6 +177,10 @@ errors = {
 
     error404: function (req, res, next) {
         var message = res.isAdmin && req.session.user ? "No Ghost Found" : "Page Not Found";
+
+        res.set({
+            'Cache-Control': 'public, max-age=3600000'
+        });
 
         if (req.method === 'GET') {
             this.renderErrorPage(404, message, req, res, next);

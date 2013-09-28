@@ -24,7 +24,7 @@ var middleware = {
 
     // to allow unit testing
     forwardToExpressStatic: function (ghost, req, res, next) {
-        return express['static'](ghost.paths().activeTheme)(req, res, next);
+        return express['static'](ghost.paths().activeTheme, {maxAge: 3600000})(req, res, next);
     }
 };
 

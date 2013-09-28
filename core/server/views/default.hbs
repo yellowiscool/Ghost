@@ -7,18 +7,28 @@
         <meta name="csrf-param" content="{{csrfToken}}">
 
         <title>{{siteTitle}}</title>
-        <meta name="description" content="{{siteDescription}}">
-        <meta name="author" content="">
+
         <meta name="HandheldFriendly" content="True">
         <meta name="MobileOptimized" content="320">
-        <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+
+        <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">    <meta http-equiv="cleartype" content="on">
         <meta name="apple-mobile-web-app-capable" content="yes" />
 
         <link rel="shortcut icon" href="/favicon.ico">
-        <meta http-equiv="cleartype" content="on">
+        <link rel="apple-touch-icon-precomposed" href="/ghost/img/touch-icon-iphone.png" />
+        <link rel="apple-touch-icon-precomposed" sizes="76x76" href="/ghost/img/touch-icon-ipad.png" />
+        <link rel="apple-touch-icon-precomposed" sizes="120x120" href="/ghost/img/small.png" />
+        <link rel="apple-touch-icon-precomposed" sizes="152x152" href="/ghost/img/medium.png" />
 
-        <link rel="stylesheet" type='text/css' href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,700'>
-        <link rel="stylesheet" href="/ghost/css/screen.css">
+        <meta name="application-name" content="Ghost"/>
+        <meta name="msapplication-TileColor" content="#ffffff"/>
+        <meta name="msapplication-square70x70logo" content="/ghost/img/small.png"/>
+        <meta name="msapplication-square150x150logo" content="/ghost/img/medium.png"/>
+        <meta name="msapplication-square310x310logo" content="/ghost/img/large.png"/>
+
+        <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,700">
+        {{asset "css/screen.css" ghost="true"}}
+
         {{{block "pageStyles"}}}
     </head>
     <body class="{{bodyClass}}">
@@ -32,13 +42,14 @@
             </aside>
 
             {{{body}}}
+
         </main>
 
         <div id="modal-container">
         </div>
         <div class="modal-background fade"></div>
 
-        {{{ghostScriptTags}}}
+        {{asset "scripts" ghost="true"}}
 
         {{{block "bodyScripts"}}}
 
