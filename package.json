@@ -25,7 +25,7 @@
         "node-uuid": "1.4.0",
         "colors": "0.6.1",
         "semver": "2.1.0",
-        "fs-extra": "0.6.3",
+        "fs-extra": "0.8.1",
         "downsize": "0.0.2",
         "validator": "1.4.0",
         "rss": "0.2.0",

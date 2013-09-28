@@ -2,13 +2,13 @@ var Ghost         = require('../../ghost'),
     dataExport    = require('../data/export'),
     dataImport    = require('../data/import'),
     _             = require('underscore'),
-    fs            = require('fs-extra'),
     path          = require('path'),
+    fs            = require('fs'),
     when          = require('when'),
     nodefn        = require('when/node/function'),
     api           = require('../api'),
-    moment        = require('moment'),
     errors        = require('../errorHandling'),
+    storage       = require('../storage'),
 
     ghost         = new Ghost(),
     dataProvider  = ghost.dataProvider,
@@ -47,74 +47,26 @@ function setSelected(list, name) {
     return list;
 }
 
-// TODO: this could be a separate module
-function getUniqueFileName(dir, name, ext, i, done) {
-    var filename,
-        append = '';
-
-    if (i) {
-        append = '-' + i;
-    }
-
-    filename = path.join(dir, name + append + ext);
-    fs.exists(filename, function (exists) {
-        if (exists) {
-            setImmediate(function () {
-                i = i + 1;
-                return getUniqueFileName(dir, name, ext, i, done);
-            });
-        } else {
-            return done(filename);
-        }
-    });
-}
-
 adminControllers = {
     'uploader': function (req, res) {
-
-        var currentDate = moment(),
-            month = currentDate.format('MMM'),
-            year =  currentDate.format('YYYY'),
-            tmp_path = req.files.uploadimage.path,
-            dir = path.join('content/images', year, month),
+        var type = req.files.uploadimage.type,
             ext = path.extname(req.files.uploadimage.name).toLowerCase(),
-            type = req.files.uploadimage.type,
-            basename = path.basename(req.files.uploadimage.name, ext).replace(/[\W]/gi, '_');
+            store = storage.get_storage();
 
-        function renameFile(target_path) {
-            // adds directories recursively
-            fs.mkdirs(dir, function (err) {
-                if (err) {
-                    return errors.logError(err);
-                }
 
-                fs.copy(tmp_path, target_path, function (err) {
-                    if (err) {
-                        return errors.logError(err);
-                    }
-
-                    fs.unlink(tmp_path, function (e) {
-                        if (err) {
-                            return errors.logError(err);
-                        }
-
-                        // the src for the image must be in URI format, not a file system path, which in Windows uses \
-                        var src = path.join('/', target_path).replace(new RegExp('\\' + path.sep, 'g'), '/');
-                        return res.send(src);
-                    });
-                });
-            });
+        if ((type !== 'image/jpeg' && type !== 'image/png' && type !== 'image/gif')
+                || (ext !== '.jpg' && ext !== '.jpeg' && ext !== '.png' && ext !== '.gif')) {
+            return res.send(415, 'Unsupported Media Type');
         }
 
-        //limit uploads to type && extension
-        if ((type === 'image/jpeg' || type === 'image/png' || type === 'image/gif')
-                && (ext === '.jpg' || ext === '.jpeg' || ext === '.png' || ext === '.gif')) {
-            getUniqueFileName(dir, basename, ext, null, function (filename) {
-                renameFile(filename);
+        store
+            .save(req.files.uploadimage)
+            .then(function (url) {
+                return res.send(url);
+            })
+            .otherwise(function (e) {
+                return errors.logError(e);
             });
-        } else {
-            res.send(403, 'Invalid file type');
-        }
     },
     'login': function (req, res) {
         res.render('login', {

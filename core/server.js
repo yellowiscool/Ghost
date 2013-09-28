@@ -14,6 +14,7 @@ var express     = require('express'),
     Ghost       = require('./ghost'),
     helpers     = require('./server/helpers'),
     middleware  = require('./server/middleware'),
+    storage     = require('./server/storage'),
     packageInfo = require('../package.json'),
 
 // Variables
@@ -311,10 +312,13 @@ when(ghost.init()).then(function () {
     express['static'].mime.define({'application/font-woff': ['woff']});
     // Shared static config
     server.use('/shared',  express['static'](path.join(__dirname, '/shared'), {maxAge: oneHour}));
-    // Images uploaded and stored in the filesystem; are immutable; maxage of one year
-    server.use('/content/images', express['static'](path.join(__dirname, '/../content/images'), {maxAge: oneYear}));
-    // Serve our built scripts; can't use /scripts here because themes already are; maxAge of one year
-    server.use('/built/scripts', express['static'](path.join(__dirname, '/built/scripts'), {maxAge: oneYear}));
+
+    server.use('/content/images', storage.get_storage().serve());
+    // Serve our built scripts; can't use /scripts here because themes already are
+    server.use('/built/scripts', express['static'](path.join(__dirname, '/built/scripts'), {
+        // Put a maxAge of one year on built scripts
+        maxAge: oneYear
+    }));
 
     // First determine whether we're serving admin or theme content
     server.use(manageAdminAndTheme);
