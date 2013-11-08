@@ -54,6 +54,7 @@
                 <p>How many posts should be displayed on each page</p>
             </div>
 
+            {{#hasMultiple availableThemes}}
             <div class="form-group">
                 <label for="activeTheme">Theme</label>
                 <select id="activeTheme" name="general[activeTheme]">
@@ -63,6 +64,9 @@
                 </select>
                 <p>Select a theme for your blog</p>
             </div>
+            {{else}}
+                <input type="hidden" id="activeTheme" value="{{activeTheme}}" />
+            {{/hasMultiple}}
 
         </fieldset>
     </form>

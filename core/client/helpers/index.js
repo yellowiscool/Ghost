@@ -13,4 +13,12 @@
         }
         return date;
     });
+
+    Handlebars.registerHelper('hasMultiple', function (context, options) {
+        if (context && context.length > 1) {
+            return options.fn(this);
+        }
+
+        return options.inverse(this);
+    });
 }());
