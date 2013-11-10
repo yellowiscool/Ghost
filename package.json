@@ -15,6 +15,7 @@
         "express-hbs": "0.2.2",
         "node-polyglot": "0.2.1",
         "moment": "2.1.0",
+        "mime": "1.2.11",
         "underscore": "1.5.1",
         "showdown": "0.3.1",
         "sqlite3": "2.1.16",

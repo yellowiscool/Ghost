@@ -3,8 +3,8 @@ var errors = require('../errorHandling'),
 
 function get_storage() {
     // TODO: this is where the check for storage plugins should go
-    // Local file system is the default
-    var storageChoice = 'localfilesystem';
+    // HTTP endpoint is the default
+    var storageChoice = 'httpendpoint';
 
     if (storage) {
         return storage;
