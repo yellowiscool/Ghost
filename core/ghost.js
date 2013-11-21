@@ -129,23 +129,23 @@ Ghost.prototype.init = function () {
     var self = this;
 
     function doFirstRun() {
-        var firstRunMessage = [
-            'Welcome to Ghost.',
-            'You\'re running under the <strong>',
-            process.env.NODE_ENV,
-            '</strong>environment.',
-
-            'Your URL is set to',
-            '<strong>' + self.config().url + '</strong>.',
-            'See <a href="http://docs.ghost.org/">http://docs.ghost.org</a> for instructions.'
-        ];
-
-        self.notifications.push({
-            type: 'info',
-            message: firstRunMessage.join(' '),
-            status: 'persistent',
-            id: 'ghost-first-run'
-        });
+//        var firstRunMessage = [
+//            'Welcome to Ghost.',
+//            'You\'re running under the <strong>',
+//            process.env.NODE_ENV,
+//            '</strong>environment.',
+//
+//            'Your URL is set to',
+//            '<strong>' + self.config().url + '</strong>.',
+//            'See <a href="http://docs.ghost.org/">http://docs.ghost.org</a> for instructions.'
+//        ];
+//
+//        self.notifications.push({
+//            type: 'info',
+//            message: firstRunMessage.join(' '),
+//            status: 'persistent',
+//            id: 'ghost-first-run'
+//        });
         return when.resolve();
     }
 
