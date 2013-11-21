@@ -32,6 +32,7 @@ var path           = require('path'),
         '!config.js',
         '!CONTRIBUTING.md',
         '!SECURITY.md',
+        '!*.heapsnapshot',
         '!.travis.yml'
     ],
 
