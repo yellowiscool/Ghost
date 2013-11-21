@@ -5,7 +5,6 @@ var express     = require('express'),
     colors      = require('colors'),
     semver      = require('semver'),
     fs          = require('fs'),
-    slashes     = require('connect-slashes'),
     errors      = require('./server/errorHandling'),
     admin       = require('./server/controllers/admin'),
     frontend    = require('./server/controllers/frontend'),
@@ -23,6 +22,56 @@ var express     = require('express'),
     ghost = new Ghost();
 
 // ##Custom Middleware
+
+// Copied from connect slashes
+function slashes(append) {
+    append = append === false ? false : true; // default to append slashes mode
+
+    // Only create RegExp objects once
+    var reQuery = /[\?\&]+/,
+        reAbsolute = /^(\/\/+)/;
+
+    return function (req, res, next) {
+
+        if ("GET" === req.method) {
+            var url = req.url.split(reQuery), location = url[0], redirect;
+
+            // Prevent redirect to absolute URLs (see issue #2)
+            location = location.replace(reAbsolute, "/");
+
+            if (append && "/" !== location[location.length - 1]) {
+
+                // append slashes
+                redirect = location + "/";
+
+            } else if (!append && "/" === location[location.length - 1] && "/" !== location) {
+
+                // remove slashes
+                redirect = location.slice(0, location.length - 1);
+
+            }
+
+            // complete the redirect url
+            if (redirect) {
+                if (url.length > 1) {
+                    redirect += "?" + url.slice(1).join("&");
+                }
+
+                res.set({
+                    'Cache-Control': 'public, max-age=3600000'
+                });
+                res.writeHead(301, { "Location": redirect });
+                res.end();
+                return;
+
+            }
+
+        }
+        next();
+
+    };
+}
+
 
 // ### Auth Middleware
 // Authenticate a request by redirecting to login if not logged in.
