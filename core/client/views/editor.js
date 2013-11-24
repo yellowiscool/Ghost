@@ -10,7 +10,7 @@
         UploadManager,
         MarkerManager,
         MarkdownShortcuts = [
-            {'key': 'Ctrl+B', 'style': 'bold'},
+/*            {'key': 'Ctrl+B', 'style': 'bold'},
             {'key': 'Meta+B', 'style': 'bold'},
             {'key': 'Ctrl+I', 'style': 'italic'},
             {'key': 'Meta+I', 'style': 'italic'},
@@ -35,7 +35,7 @@
             {'key': 'Ctrl+Alt+C', 'style': 'copyHTML'},
             {'key': 'Meta+Alt+C', 'style': 'copyHTML'},
             {'key': 'Meta+Enter', 'style': 'newLine'},
-            {'key': 'Ctrl+Enter', 'style': 'newLine'}
+            {'key': 'Ctrl+Enter', 'style': 'newLine'}*/
         ],
         imageMarkdownRegex = /^(?:\{<(.*?)>\})?!(?:\[([^\n\]]*)\])(?:\(([^\n\]]*)\))?$/gim,
         markerRegex = /\{<([\w\W]*?)>\}/;
